@@ -62,8 +62,14 @@ static bool valid_pwm(int number)
 
 void set_pwmchip(int chip)
 {
-	if (chip >= 0)
-		pwm_chip = chip;
+	int number;
+
+	if (chip < 0)
+		return;
+	for (number = 0; number < MAX_PWM_CHANNELS; number++)
+		if (pwm_channels[number])
+			return;
+	pwm_chip = chip;
 }
 
 int find_pwms(void)
